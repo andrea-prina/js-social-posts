@@ -109,6 +109,7 @@ function createPost (postData){
 
     const postCard = createElementWithClasses("div", "post");
 
+    // POST HEADER
     const postHeader = createElementWithClasses("div", "post__header");
     postHeader.innerHTML =
     `
@@ -125,27 +126,40 @@ function createPost (postData){
 
     // TODO Da rendere dinamica la differenza di mesi da quando è stato fatto ad oggi
 
+    // POST BODY
     const postText = createElementWithClasses("div", "post__text");
     postText.innerHTML = postData.content;
 
     const postImage = createElementWithClasses("div", "post__image");
     postImage.innerHTML = `<img src=${postData.media} alt=""></div>`
 
+    // POST FOOTER
     const postFooter = createElementWithClasses("div", "post__footer");
-    postFooter.innerHTML =
-    `
-    <div class="likes js-likes">
-        <div class="likes__cta">
-            <a class="like-button  js-like-button" href="#" data-postid="${postData.id}">
-                <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
-                <span class="like-button__label">Mi Piace</span>
-            </a>
-        </div>
-        <div class="likes__counter">
-            Piace a <b id="like-counter-1" class="js-likes-counter">${postData.likes}</b> persone
-        </div>
-    </div>
-    `
+
+    const likesSection = createElementWithClasses("div", "likes", "js-likes");
+    const likeButton = createElementWithClasses("a", "like-button", "js-like-button");
+
+    if (postData.is_liked){
+        likeButton.classList.add("like-button--liked");
+    }
+
+    likeButton.setAttribute("href", "#");
+    likeButton.setAttribute("data-postid", postData.id);
+    likeButton.innerHTML = `<i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
+                            <span class="like-button__label">Mi Piace</span>`;
+    
+    likeButton.addEventListener("click", function(){
+        if(likeButton.classList.contains("like-button--liked") == false){
+            likeButton.classList.add("like-button--liked");
+        }
+    })
+
+
+    const likesCounter = createElementWithClasses("div", "likes__counter");
+    likesCounter.innerHTML = `Piace a <b id="like-counter-1" class="js-likes-counter">${postData.likes}</b> persone`
+
+    likesSection.append(likeButton, likesCounter);
+    postFooter.append(likesSection);
 
     postCard.append(postHeader, postText, postImage, postFooter);
     postListContainer.append(postCard);
