@@ -118,7 +118,7 @@ postHeader.innerHTML =
 // TODO Da rendere dinamica la differenza di mesi da quando è stato fatto ad oggi
 
 const postText = createElementWithClasses("div", "post__text");
-postText.innerHTML = "Placeat libero ipsa nobis ipsum quibusdam quas harum ut. Distinctio minima iusto. Ad ad maiores et sint voluptate recusandae architecto. Et nihil ullam aut alias.";
+postText.innerHTML = posts[7].content;
 
 const postImage = createElementWithClasses("div", "post__image");
 postImage.innerHTML = `<img src=${posts[0].media} alt=""></div>`
