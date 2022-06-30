@@ -140,7 +140,7 @@ function createPost (postData){
     const likeButton = createElementWithClasses("a", "like-button", "js-like-button");
 
     if (postData.is_liked){
-        likeButton.classList.add("like-button--liked");
+        likeButton.classList.add("active");
     }
 
     likeButton.setAttribute("href", "#");
@@ -148,21 +148,29 @@ function createPost (postData){
     likeButton.innerHTML = `<i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
                             <span class="like-button__label">Mi Piace</span>`;
     
-    likeButton.addEventListener("click", function(){
-        if(likeButton.classList.contains("like-button--liked") == false){
-            likeButton.classList.add("like-button--liked");
-        }
-    })
-
-
     const likesCounter = createElementWithClasses("div", "likes__counter");
     likesCounter.innerHTML = `Piace a <b id="like-counter-1" class="js-likes-counter">${postData.likes}</b> persone`
+
+    // If the post is not already liked, change the button color and increment the likes counter by one. Viceversa, do the opposite.
+    likeButton.addEventListener("click", function(){
+        if(likeButton.classList.contains("active") == false){
+            likeButton.classList.add("active");
+            postData.likes++;
+        } else {
+            likeButton.classList.remove("active");
+            postData.likes--;
+        }
+        likesCounter.innerHTML = `Piace a <b id="like-counter-1" class="js-likes-counter">${postData.likes}</b> persone`;
+
+    })
+
 
     likesSection.append(likeButton, likesCounter);
     postFooter.append(likesSection);
 
     postCard.append(postHeader, postText, postImage, postFooter);
     postListContainer.append(postCard);
+
 
 }
 
