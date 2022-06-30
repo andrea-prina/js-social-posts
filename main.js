@@ -97,8 +97,15 @@ const posts = [
     }
 ];
 
-const postListContainer = document.getElementById("container");
+// Convert creation data of each post into Italian format
+posts.forEach((element) => {
+    element.created = convertDateToItalianFormat(element.created);
+})
 
+
+
+
+const postListContainer = document.getElementById("container");
 
 posts.forEach((element) => {
     createPost(element);
@@ -109,22 +116,23 @@ function createPost (postData){
 
     const postCard = createElementWithClasses("div", "post");
 
+    const postDateDifference = getMonthsDifference(postData.created);
+
+
     // POST HEADER
     const postHeader = createElementWithClasses("div", "post__header");
     postHeader.innerHTML =
     `
     <div class="post-meta">
     <div class="post-meta__icon">
-        <img class="profile-pic" src=${postData.author.image} alt=${postData.author.name}>
+        <img class="profile-pic" src=${postData.author.image} alt="${postData.author.name}">
     </div>
     <div class="post-meta__data">
         <div class="post-meta__author">${postData.author.name}</div>
-        <div class="post-meta__time">4 mesi fa</div> 
+        <div class="post-meta__time">${(postDateDifference === 1 ? `${postDateDifference} mese fa` : `${postDateDifference} mesi fa`)}</div> 
     </div>
     </div>
     `;
-
-    // TODO Da rendere dinamica la differenza di mesi da quando è stato fatto ad oggi
 
     // POST BODY
     const postText = createElementWithClasses("div", "post__text");
@@ -182,5 +190,23 @@ function createElementWithClasses(elementType, ...elementClasses){
     })
     return newElement
 }
+
+
+function convertDateToItalianFormat (originalDate){
+    const splittedDate = originalDate.split("-");
+    const formattedDate = splittedDate[2] + "/" + splittedDate[1] + "/" + splittedDate[0];
+    return formattedDate
+
+}
+
+function getMonthsDifference (pastDate){
+    const today = new Date();
+    const currentMonth = today.getMonth() + 1;
+    const postDateMonth = parseInt(pastDate.split("/")[1]);
+    let dateDifference = currentMonth - postDateMonth;
+
+    return (dateDifference < 1) ? dateDifference += 12 : dateDifference;
+}
+
 
 
