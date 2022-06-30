@@ -99,6 +99,49 @@ const posts = [
 
 const postListContainer = document.getElementById("container");
 
+const postCard = createElementWithClasses("div", "post");
+
+const postHeader = createElementWithClasses("div", "post__header");
+postHeader.innerHTML =
+`
+<div class="post-meta">
+<div class="post-meta__icon">
+    <img class="profile-pic" src=${posts[0].author.image} alt=${posts[0].author.name}>
+</div>
+<div class="post-meta__data">
+    <div class="post-meta__author">${posts[0].author.name}</div>
+    <div class="post-meta__time">4 mesi fa</div> 
+</div>
+</div>
+`;
+
+// TODO Da rendere dinamica la differenza di mesi da quando è stato fatto ad oggi
+
+const postText = createElementWithClasses("div", "post__text");
+postText.innerHTML = "Placeat libero ipsa nobis ipsum quibusdam quas harum ut. Distinctio minima iusto. Ad ad maiores et sint voluptate recusandae architecto. Et nihil ullam aut alias.";
+
+const postImage = createElementWithClasses("div", "post__image");
+postImage.innerHTML = `<img src=${posts[0].media} alt=""></div>`
+
+const postFooter = createElementWithClasses("div", "post__footer");
+postFooter.innerHTML =
+`
+<div class="likes js-likes">
+    <div class="likes__cta">
+        <a class="like-button  js-like-button" href="#" data-postid="${posts[0].id}">
+            <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
+            <span class="like-button__label">Mi Piace</span>
+        </a>
+    </div>
+    <div class="likes__counter">
+        Piace a <b id="like-counter-1" class="js-likes-counter">${posts[0].likes}</b> persone
+    </div>
+</div>
+`
+
+postCard.append(postHeader, postText, postImage, postFooter);
+postListContainer.append(postCard);
+
 function createElementWithClasses(elementType, ...elementClasses){
     const newElement = document.createElement(elementType);
     elementClasses.forEach((element) => {
