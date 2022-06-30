@@ -96,3 +96,13 @@ const posts = [
         "created": "2021-12-11"
     }
 ];
+
+const postListContainer = document.getElementById("container");
+
+function createElementWithClasses(elementType, ...elementClasses){
+    const newElement = document.createElement(elementType);
+    elementClasses.forEach((element) => {
+        newElement.classList.add(element)
+    })
+    return newElement
+}
