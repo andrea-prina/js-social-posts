@@ -104,7 +104,7 @@ posts.forEach((element) => {
 
 
 
-
+// Create the container element and append a post card element for each post in the object data array
 const postListContainer = document.getElementById("container");
 
 posts.forEach((element) => {
@@ -116,16 +116,25 @@ function createPost (postData){
 
     const postCard = createElementWithClasses("div", "post");
 
-    const postDateDifference = getMonthsDifference(postData.created);
-
-
     // POST HEADER
     const postHeader = createElementWithClasses("div", "post__header");
+
+    let avatar = ""; // Avatar placeholder if an image is not available
+    if (postData.author.image === "null" || postData.author.image === null){
+        const authorNameFirstLetter = postData.author.name.split(" ")[0].charAt(0);
+        const authorSurnameFirstLetter = postData.author.name.split(" ")[1].charAt(0);
+        avatar = `<div class="profile-pic-default"><span>${authorNameFirstLetter + authorSurnameFirstLetter}</span></div>`;
+    } else {
+        avatar =`<img class="profile-pic" src=${postData.author.image} alt="${postData.author.name}">`;
+    }
+
+    const postDateDifference = getMonthsDifference(postData.created);
+
     postHeader.innerHTML =
     `
     <div class="post-meta">
     <div class="post-meta__icon">
-        <img class="profile-pic" src=${postData.author.image} alt="${postData.author.name}">
+        ${avatar}
     </div>
     <div class="post-meta__data">
         <div class="post-meta__author">${postData.author.name}</div>
@@ -134,12 +143,16 @@ function createPost (postData){
     </div>
     `;
 
+
+
     // POST BODY
     const postText = createElementWithClasses("div", "post__text");
     postText.innerHTML = postData.content;
 
     const postImage = createElementWithClasses("div", "post__image");
     postImage.innerHTML = `<img src=${postData.media} alt=""></div>`
+
+
 
     // POST FOOTER
     const postFooter = createElementWithClasses("div", "post__footer");
@@ -196,10 +209,11 @@ function convertDateToItalianFormat (originalDate){
     const splittedDate = originalDate.split("-");
     const formattedDate = splittedDate[2] + "/" + splittedDate[1] + "/" + splittedDate[0];
     return formattedDate
-
 }
 
+
 function getMonthsDifference (pastDate){
+    // !FIXME Attualmente non gestisce differenze di mese > 12 (es. se TODAY 07/2023 e post 06/2022 la differenza è 1 mese)
     const today = new Date();
     const currentMonth = today.getMonth() + 1;
     const postDateMonth = parseInt(pastDate.split("/")[1]);
