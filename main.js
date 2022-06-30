@@ -140,7 +140,7 @@ function createPost (postData){
     const likeButton = createElementWithClasses("a", "like-button", "js-like-button");
 
     if (postData.is_liked){
-        likeButton.classList.add("active");
+        likeButton.classList.add("like-button--liked");
     }
 
     likeButton.setAttribute("href", "#");
@@ -152,7 +152,8 @@ function createPost (postData){
     likesCounter.innerHTML = `Piace a <b id="like-counter-1" class="js-likes-counter">${postData.likes}</b> persone`
 
     // If the post is not already liked, change the button color and increment the likes counter by one. Viceversa, do the opposite.
-    likeButton.addEventListener("click", function(){
+    likeButton.addEventListener("click", function(e){
+        e.preventDefault();
         if(likeButton.classList.contains("like-button--liked") == false){
             likeButton.classList.add("like-button--liked");
             postData.likes++;
