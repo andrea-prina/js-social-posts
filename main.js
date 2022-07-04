@@ -114,21 +114,23 @@ posts.forEach((element) => {
 
 function createPost (postData){
 
+    const {id, content, media, author, likes, created, is_liked} = postData;
+
     const postCard = createElementWithClasses("div", "post");
 
     // POST HEADER
     const postHeader = createElementWithClasses("div", "post__header");
 
     let avatar = ""; // Avatar placeholder if an image is not available
-    if (postData.author.image === "null" || postData.author.image === null){
-        const authorNameFirstLetter = postData.author.name.split(" ")[0].charAt(0);
-        const authorSurnameFirstLetter = postData.author.name.split(" ")[1].charAt(0);
+    if (author.image === "null" || author.image === null){
+        const authorNameFirstLetter = author.name.split(" ")[0].charAt(0);
+        const authorSurnameFirstLetter = author.name.split(" ")[1].charAt(0);
         avatar = `<div class="profile-pic-default"><span>${authorNameFirstLetter + authorSurnameFirstLetter}</span></div>`;
     } else {
-        avatar =`<img class="profile-pic" src=${postData.author.image} alt="${postData.author.name}">`;
+        avatar =`<img class="profile-pic" src=${author.image} alt="${author.name}">`;
     }
 
-    const postDateDifference = getMonthsDifference(postData.created);
+    const postDateDifference = getMonthsDifference(created);
 
     postHeader.innerHTML =
     `
@@ -137,7 +139,7 @@ function createPost (postData){
         ${avatar}
     </div>
     <div class="post-meta__data">
-        <div class="post-meta__author">${postData.author.name}</div>
+        <div class="post-meta__author">${author.name}</div>
         <div class="post-meta__time">${(postDateDifference === 1 ? `${postDateDifference} mese fa` : `${postDateDifference} mesi fa`)}</div> 
     </div>
     </div>
@@ -147,10 +149,10 @@ function createPost (postData){
 
     // POST BODY
     const postText = createElementWithClasses("div", "post__text");
-    postText.innerHTML = postData.content;
+    postText.innerHTML = content;
 
     const postImage = createElementWithClasses("div", "post__image");
-    postImage.innerHTML = `<img src=${postData.media} alt=""></div>`
+    postImage.innerHTML = `<img src=${media} alt=""></div>`
 
 
 
@@ -160,12 +162,12 @@ function createPost (postData){
     const likesSection = createElementWithClasses("div", "likes", "js-likes");
     const likeButton = createElementWithClasses("a", "like-button", "js-like-button");
 
-    if (postData.is_liked){
+    if (is_liked){
         likeButton.classList.add("like-button--liked");
     }
 
     likeButton.setAttribute("href", "#");
-    likeButton.setAttribute("data-postid", postData.id);
+    likeButton.setAttribute("data-postid", id);
     likeButton.innerHTML = `<i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
                             <span class="like-button__label">Mi Piace</span>`;
     
@@ -177,12 +179,12 @@ function createPost (postData){
         e.preventDefault();
         if(likeButton.classList.contains("like-button--liked") == false){
             likeButton.classList.add("like-button--liked");
-            postData.likes++;
+            likes++;
         } else {
             likeButton.classList.remove("like-button--liked");
-            postData.likes--;
+            likes--;
         }
-        likesCounter.innerHTML = `Piace a <b id="like-counter-1" class="js-likes-counter">${postData.likes}</b> persone`;
+        likesCounter.innerHTML = `Piace a <b id="like-counter-${id}" class="js-likes-counter">${postData.likes}</b> persone`;
 
     })
 
